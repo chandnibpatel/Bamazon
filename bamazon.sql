@@ -18,6 +18,7 @@ primary key (department_id)
 )*/
 
 select * from departments;
+select * from products;
 alter table products 
 add product_Sales dec(10,4) default 0;
 
@@ -26,7 +27,7 @@ select d.*,sum(p.product_sales) product_sales, (sum(p.product_sales)-over_head_c
 group by  department_name;
 
 /* Highest Selling Dept*/
-select  d.*,p.product_sales from products p join departments d on p.department_name= d.department_name
+select  d.*,sum(p.product_sales)  product_sales from products p join departments d on p.department_name= d.department_name
 group by  d.department_name order by product_sales desc limit 1;
 
 /* Total Store selling*/

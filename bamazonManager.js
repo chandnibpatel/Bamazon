@@ -139,6 +139,11 @@ var  promptAddInv = function(){
             message: "Enter the product name for which you would like to add stock !! Or [Quit with Q]"
             
          }).then(function (answer) {
+            if(answer.item.toUpperCase()=== 'Q')
+            {
+                connection.end();
+                process.exit();
+            }
             var itemInList = false;
             //verify the choice against the available items to purchase
             var availableStock = 0 ;
@@ -197,7 +202,7 @@ var updateStock = function (itemid, totalStock) {
     ], function (err, res) {
         if (err) throw err;
         console.log("\n"+ res.affectedRows + "products updated!\n");
-        console.log("Stock successfully added for  itemID " + itemid + "!! Thank you for ur order!!");
+        console.log("Stock successfully added for  itemID " + itemid + "!!");
         viewSale();
         promptMenu();
     })

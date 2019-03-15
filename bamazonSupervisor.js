@@ -121,7 +121,7 @@ var viewSummary=function(){
         console.table(results);
        
     })
-    connection.query("select  d.*,product_sales  from products p join departments d on p.department_name= d.department_name "+
+    connection.query("select  d.*,sum(p.product_sales)  product_sales from products p join departments d on p.department_name= d.department_name "+
                 "group by  d.department_name order by product_sales desc limit 1;",
         function(err,results){
             if (err) throw err;

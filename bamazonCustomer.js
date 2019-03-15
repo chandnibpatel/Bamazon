@@ -43,7 +43,7 @@ var promptCustomer = function(res){
             if (res[i].product_name.toUpperCase() === answer.choice.toUpperCase() ) {
                 var chosenItem = res[i];
                 itemInList = true;
-                console.log("chosen item id :", chosenItem);
+                //console.log("chosen item id :", chosenItem);
                 promptQuantity(chosenItem);
         
             }//If end
@@ -77,7 +77,7 @@ var promptQuantity = function(chosenItem){
             promptQuantity(chosenItem);
         }
         else {
-            console.log('Update stock');
+            //console.log('Update stock');
             chosenItem.stock_quantity = chosenItem.stock_quantity - answer.quantity
             updateStock(chosenItem,answer.quantity);
         }
