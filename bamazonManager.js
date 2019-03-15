@@ -27,7 +27,7 @@ var promptMenu = function(){
         name: "choice",
         type: "list",
         choices: [viewProductSale, viewLowInvtry, addToInvtry,addNewProduct,quit],
-        message: "Which option would you like to select? [Quit with Q]"
+        message: "Which option would you like to select?"
     }).then(function (answer) {
       
         switch (answer.choice) {
@@ -62,25 +62,29 @@ var promptMenu = function(){
         }
     });
 }
+
+//this function to view the product table
 var viewSale = function(){
     connection.query("select item_id, product_name,price,stock_quantity  from products", function (err, res) {
     console.table(res);
     promptMenu();
-    //process.exit();
     })
 }
 
+//view inventory function to see the products with low stocks (i.e. stocks < 15)
 var viewInvtry = function(){
-    connection.query("select item_id, product_name,price,stock_quantity from products where stock_quantity < ?",20,function (err, res) {
+    connection.query("select item_id, product_name,price,stock_quantity from products where stock_quantity < ?",15,function (err, res) {
     console.table(res);
     promptMenu();
     });
 }
 
+//add inventory function
 var addInvtry = function(){
     promptAddInv();
 }
 
+//function to add new product ! prompt a manager for product name, deptname, price and stock
 var addProduct = function(){
     inquirer.prompt([{
         name: "productName",
@@ -119,13 +123,12 @@ var addProduct = function(){
         
      }]
      ).then(function (answer) {
-        console.log(answer.productName);
         insertProduct(answer.productName,answer.deptName,answer.price, answer.stock);
     });
     
 }
 
-
+//prompt manager for add inventory
 var  promptAddInv = function(){
     connection.query("select item_id, product_name,price,stock_quantity  from products", 
     function (err, res) {
@@ -164,6 +167,7 @@ var  promptAddInv = function(){
     });
 }
 
+//this function is to prompt a manager for adding the stock
 var promptStock = function(itemid,availableStock){
     inquirer.prompt({
         name: "quantity",
@@ -199,6 +203,7 @@ var updateStock = function (itemid, totalStock) {
     })
 }
 
+//insert Product function to add a new product
 var insertProduct = function(productName,deptName,price, stock){
     connection.query("insert into products set ?", {
         product_name:productName,

@@ -79,25 +79,34 @@ var promptQuantity = function(chosenItem){
         else {
             console.log('Update stock');
             chosenItem.stock_quantity = chosenItem.stock_quantity - answer.quantity
-            updateStock(chosenItem.item_id, chosenItem.stock_quantity);
+            updateStock(chosenItem,answer.quantity);
         }
 
     });
 }
 
-//update Stock function to update the table
-var updateStock = function (itemid, quantity) {
+//update Stock function to update the table , Also update the product sales
+var updateStock = function (chosenItem,purchaseQuantity) {
     connection.query("update products set ? where ?", [
         {
-            stock_quantity: quantity
+            stock_quantity: chosenItem.stock_quantity
         },
         {
-            item_id: itemid
+            item_id: chosenItem.item_id
         }
     ], function (err, res) {
         if (err) throw err;
         console.log(res.affectedRows + "products updated!\n");
-        console.log("Product successfully purchased!! Thank you for ur order!!");
+        
+        connection.query("update products set product_Sales = product_Sales + " + 
+                        (purchaseQuantity*chosenItem.price)+ " where ?", 
+                        {
+                            item_id: chosenItem.item_id
+                        },
+                        function (err, res) {
+                            if (err) throw err;
+                            console.log("Product successfully purchased!! Thank you for ur order!!");
+                        })
         showTable();
     })
 }
